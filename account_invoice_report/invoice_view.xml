@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_invoice_bo">
+            <field name="name">account.invoice.form.bo</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_invoice']" position="before">
+	                <field name="nit" />
+	                <newline/>
+	            </xpath>
+	            <xpath expr="//field[@name='date_invoice']" position="replace">
+                    <field name="date_invoice" required="1"/>
+                    <field name="control_code" invisible="1" />
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position']" position="after">
+                    <field name="shop_id" required="1" on_change="onchange_shop_id(shop_id)" />
+                    <field name="qr_code_id" required="1" />
+                    <field name="legal_customer_name" />
+                    <field name="get_month_first_date" invisible="1"/>
+                    <field name="qr_invoice_no" />
+                    <field name="amt_thirteen" invisible="1" />
+                </xpath>
+                <xpath expr="//button[@name='invoice_open']" position="after">
+                    <button string="Print QR" name="print_qr_report" type="object" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_invoice_supplier_bo">
+            <field name="name">account.invoice.supplier.form.bo</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_invoice']" position="before">
+                    <field name="nit" />
+                    <newline/>
+                </xpath>
+                <xpath expr="//field[@name='date_invoice']" position="replace">
+                    <field name="date_invoice" required="1"/>
+                    <field name="control_code" invisible="1" />
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position']" position="after">
+                    <field name="shop_id" required="1" />
+                    <field name="qr_code_id" required="1" />
+                    <field name="legal_customer_name" />
+                    <field name="get_month_first_date" invisible="1"/>
+                    <field name="qr_invoice_no" />
+                    <field name="amt_thirteen" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='invoice_open']" position="after">
+                    <button string="Print QR" name="print_qr_report" type="object" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_shop_view_extended">
+            <field name="name">sale.shop.extended</field>
+            <field name="model">sale.shop</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_shop_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='shop']" position="after">
+                   <notebook>
+                       <page string="Dosificacion Tienda">
+                          <separator string="QR Code" />
+                          <field name="qr_code_ids" colspan="6" nolabel="1"/>
+                       </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="local_qr_code_view_tree" model="ir.ui.view">
+            <field name="name">view.qr.code.tree</field>
+            <field name="model">qr.code</field>
+            <field name="arch" type="xml">
+                <tree string="Dosificacion Tienda" version="7.0">
+                    <field name="auth_number" />
+                    <field name="nit_code_comapny"/>
+                    <field name="company_name"/>
+                    <field name="date_limit"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_qr_code_form" model="ir.ui.view">
+            <field name="name">view.qr.code.form</field>
+            <field name="model">qr.code</field>
+            <field name="arch" type="xml">
+                <form string="Dosificacion Tienda" version="7.0">
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="auth_number" required="1"/>
+                            <field name="keygen" required="1"/>
+                            <field name="nit_code_comapny" required="1"/>
+                            <field name="company_name" required="1"/>
+                            <field name="date_limit" required="1"/>
+                            <field name="print_formate" />
+                            <field name="invoice_authorization" invisible="1"/>
+                            <field name="invoice_number" invisible="1"/>
+                            <field name="qr_date" invisible="1"/>
+                            <field name="amount" invisible="1"/>
+                            <field name="ice" invisible="1"/>
+                            <field name="ivg" invisible="1" />
+                            <field name="nit_code_customer" invisible="1" />
+                            <field name="legal_customer_name" invisible="1" />
+                        </group>
+                        <notebook>
+                           <page string="Shop">
+                               <group>
+                                   <group>
+                                       <field name="code" />
+                                       <field name="slogan" />
+                                   </group>
+                                   <group>
+                                       <group col="2" colsapan="2">
+                                           <label for="street" string="Address" />
+                                           <group col="1">
+                                                   <field name="street1" nolabel="1" placeholder="Street1" />
+                                                   <field name="street2" nolabel="1" placeholder="Street2" />
+                                                   <field name="city" nolabel="1" placeholder="City" />
+                                           </group>
+                                           <field name="phone" />
+                                       </group>
+                                   </group>
+                               </group>
+                               <separator string="Description" />
+                               <field name="description" />
+                           </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
